@@ -1,0 +1,42 @@
+﻿@model IEnumerable<UniversityProject.ViewModels.ManageUsersViewModel>
+
+@{
+    ViewData["Title"] = "Manage Users";
+}
+
+<h2>Manage Users</h2>
+
+<p>
+    <a asp-action="CreateUser">Create New User</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Roles</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Username</td>
+                <td>@user.Email</td>
+                <td>
+                    @foreach (var role in user.Roles)
+                    {
+                        @role
+                    }
+                </td>
+                <td>
+                    <a asp-action="" asp-route-id="@user.UserId">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@user.UserId">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@user.UserId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

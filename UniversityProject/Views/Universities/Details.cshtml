@@ -1,0 +1,102 @@
+﻿@model UniversityProject.ViewModels.UniversityDetailsViewModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    h1{
+        font-size:40px !important;
+        margin:20px;
+    }
+</style>
+<h1 class="text-2xl font-bold mb-4 text-center">University Details</h1>
+
+<div class="container">
+    <div class="card bg-base-100 shadow-xl mb-4">
+        <div class="card-body">
+            <h2 class="card-title">@Model.University.Name</h2>
+            <p>@Model.University.Description</p>
+            <p><strong>Location:</strong> @Model.University.Location</p>
+            <p><strong>Contact Email:</strong> @Model.University.ContactEmail</p>
+            <p><strong>Contact Phone:</strong> @Model.University.ContactPhone</p>
+            <p><strong>Website:</strong> <a href="@Model.University.Website">@Model.University.Website</a></p>
+            <p><strong>Created Date:</strong> @Model.University.CreatedDate.ToString()</p>
+        </div>
+    </div>
+
+    <h1 class="text-center mb-4">Departments</h1>
+    <div class="row">
+        @foreach (var department in Model.Departments)
+        {
+            <div class="card bg-base-100 image-full w-auto shadow-xl">
+                <figure>
+                    <img src="https://picsum.photos/500/200?random=@department.Name"
+                        alt="Shoes" />
+                </figure>
+                <div class="card-body">
+                    <h2 class="card-title">@department.Name</h2>
+                    <p>@department.Description</p>
+                    <div class="card-actions justify-end">
+                        <button class="btn btn-close-white">More From this Faculty</button>
+                    </div>
+                </div>
+            </div>
+        }
+        
+    </div>
+
+    <h1 class="text-center mb-4">Courses</h1>
+    <ul class="list-disc ml-6">
+        @foreach (var course in Model.Courses)
+        {
+            <div class="dropdown">
+                <div tabindex="0" role="button" class="btn m-1">@course.Title</div>
+                <div
+                    tabindex="0"
+                    class="dropdown-content card card-compact bg-primary text-primary-content z-[1] w-64 p-2 shadow">
+                    <div class="card-body">
+                        <h3 class="card-title">@course.Title</h3>
+                        <p>@course.Description</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </ul>
+
+    <h1 class="text-center mb-4">Faculties</h1>
+    <div class="row">
+        @foreach (var faculty in Model.Faculties)
+        {
+            <div class="col-md-4 mb-3">
+                <div class="card bg-base-100 shadow-xl">
+                    <div class="card-body">
+                        <h5 class="card-title">@faculty.FirstName @faculty.LastName</h5>
+                        <p class="card-text">@faculty.Title</p>
+                        <p><strong>Email:</strong> @faculty.Email</p>
+                        <p><strong>Phone:</strong> @faculty.Phone</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="card bg-base-100 shadow-xl mb-4">
+        <div class="card-body">
+            <h4 class="card-title">Number of Followers</h4>
+            <p class="card-text">@Model.University.Followers.Count</p>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <a asp-action="Edit" asp-route-id="@Model?.University.UniversityId" class="btn btn-primary">Edit</a>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,73 @@
+﻿@model UniversityProject.Models.University
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-2xl font-bold mb-4">Edit University</h1>
+
+<div class="card bg-base-100 shadow-xl p-6">
+    <div class="card-body">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
+            <input type="hidden" asp-for="UniversityId" />
+
+            <label class="input input-bordered flex items-center gap-2 mb-4">
+                Name
+                <input asp-for="Name" class="grow input" placeholder="Enter University Name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </label>
+
+            <label class="input input-bordered flex items-center gap-2 mb-4">
+                Description
+                <input asp-for="Description" class="grow input" placeholder="Enter Description" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </label>
+
+            <label class="input input-bordered flex items-center gap-2 mb-4">
+                Location
+                <input asp-for="Location" class="grow input" placeholder="Enter Location" />
+                <span asp-validation-for="Location" class="text-danger"></span>
+            </label>
+
+            <label class="input input-bordered flex items-center gap-2 mb-4">
+                Contact Email
+                <input asp-for="ContactEmail" class="grow input" placeholder="Enter Contact Email" />
+                <span asp-validation-for="ContactEmail" class="text-danger"></span>
+            </label>
+
+            <label class="input input-bordered flex items-center gap-2 mb-4">
+                Contact Phone
+                <input asp-for="ContactPhone" class="grow input" placeholder="Enter Contact Phone" />
+                <span asp-validation-for="ContactPhone" class="text-danger"></span>
+            </label>
+
+            <label class="input input-bordered flex items-center gap-2 mb-4">
+                Website
+                <input asp-for="Website" class="grow input" placeholder="Enter Website" />
+                <span asp-validation-for="Website" class="text-danger"></span>
+            </label>
+
+            <label class="input input-bordered flex items-center gap-2 mb-4">
+                Created Date
+                <input asp-for="CreatedDate" class="grow input" placeholder="Enter Created Date" />
+                <span asp-validation-for="CreatedDate" class="text-danger"></span>
+            </label>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

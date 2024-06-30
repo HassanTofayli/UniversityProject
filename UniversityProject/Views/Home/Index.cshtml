@@ -1,0 +1,100 @@
+﻿@model UniversityProject.ViewModels.IndexViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+<!-- Open the modal using ID.showModal() method -->
+<dialog id="deleteModal" class="modal">
+    <div class="modal-box">
+        <h3 class="text-lg font-bold">Delete University</h3>
+        <p class="py-4">Are you sure you want to delete <span id="uniName"></span>?</p>
+        <div class="modal-action">
+            <form method="post" asp-action="Delete" asp-controller="Universities" asp-route-id="deleteUniId">
+                <input type="hidden" name="id" id="deleteUniId" />
+                <a class="btn" id="deletebtn" >Delete</a>
+                <button type="button" class="btn" onclick="closeModal()">Cancel</button>
+            </form>
+        </div>
+    </div>
+</dialog>
+
+<div class="text-center">
+    <section class="wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col text-center mb-5">
+                    <h1 class="display-4 font-weight-bolder text-dark">List of Universities</h1>
+                    <p class="lead">Explore the universities and their details below.</p>
+                </div>
+            </div>
+            <label class="input input-bordered flex items-center gap-2">
+                <input type="text" class="grow" placeholder="Search Universities" id="searchInput" onkeyup="filterCards()" />
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     viewBox="0 0 16 16"
+                     fill="currentColor"
+                     class="h-4 w-4 opacity-70">
+                    <path fill-rule="evenodd"
+                          d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+                          clip-rule="evenodd" />
+                </svg>
+            </label>
+            <div class="row mt-5" id="universityCards">
+                @foreach (var university in Model.Universities)
+                {
+                    <div class="col-sm-12 col-md-6 col-lg-4 mb-4 university-card">
+                        <div class="card bg-base-100 w-100 shadow-xl">
+                            <figure>
+                                <img src="https://picsum.photos/500/300?random=@university.UniversityId" alt="@university.Name" />
+                            </figure>
+                            <div class="card-body">
+                                <h2 class="card-title"><a class="text-dark" href="@Url.Action("Details", "Universities", new { id = university.UniversityId })">@university.Name</a></h2>
+                                <p>@university.Description</p>
+                                <div class="card-actions justify-end">
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <a href="@Url.Action("Edit", "Universities", new { id = university.UniversityId })" class="btn m-1">Edit University</a>
+                                        <button class="btn m-1" onclick="showDeleteModal('@university.UniversityId', '@university.Name')">Delete</button>
+                                    }
+                                    <a href="/universities/details/@university.UniversityId" class="btn btn-primary">View Details</a>
+                                    <a href="@university.Website" target="_blank" class="btn btn-primary">Visit Website</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function filterCards() {
+            var input, filter, cards, cardContainer, title, i;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            cardContainer = document.getElementById("universityCards");
+            cards = cardContainer.getElementsByClassName("university-card");
+            for (i = 0; i < cards.length; i++) {
+                title = cards[i].getElementsByClassName("card-title")[0].textContent;
+                if (title.toUpperCase().indexOf(filter) > -1) {
+                    cards[i].style.display = "";
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+        }
+
+        function showDeleteModal(id, name) {
+            document.getElementById('uniName').textContent = name;
+            document.getElementById('deleteUniId').value = id;
+            document.getElementById('deleteModal').showModal();
+            document.getElementById('deletebtn').href = "Universities/Delete/" + id;
+        }
+
+        function closeModal() {
+            document.getElementById('deleteModal').close();
+        }
+    </script>
+}
